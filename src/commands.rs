@@ -22,7 +22,7 @@ pub fn parse_command(input: String) -> (Option<String>, Vec<String>) {
 pub fn run_command(input: String) {
     let (cmd, args) = parse_command(input);
     match cmd.as_deref() {
-        Some("test") => {
+        Some("test") => { // Test command, outputs args for testing
             for s in args {
                 println!("{}",s);
             }
