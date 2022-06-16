@@ -26,7 +26,7 @@ pub fn parse_input(input: String) -> Option<(String, Vec<String>)> {
     opt
 }
 
-// Send user input to parse_command(), then matches the command Option
+// Send user input to parse_input(), then matches the command Option
 // to execute the associated function
 pub fn run_command(items: &mut Items, input: String) {
 
