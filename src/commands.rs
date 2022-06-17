@@ -29,56 +29,33 @@ pub fn parse_input(input: String) -> Option<(String, Vec<String>)> {
 // Send user input to parse_input(), then matches the command Option
 // to execute the associated function
 pub fn run_command(items: &mut Items, input: String) -> Result<(), String> {
-
-    // Create a HashMap of commands
-    let mut commands: HashMap<String, fn(&mut Items, Vec<String>)> = HashMap::new();
-
-    // Fill that HashMap of commands
-    commands.insert(
-        "test".to_string(),
-        |_items: &mut Items, args: Vec<String>| {
-            for s in args {
-                println!("{}", s);
-            }
-        }
-        );
-     
-    commands.insert(
-        "add".to_string(),
-        |items: &mut Items, args: Vec<String>| {
-            let mut content = String::new();
-            for s in args {
-                content.push_str(&s);
-            }
-            items.add_entry(
-                content
-                );
-        }
-        );
-
-    commands.insert(
-        "list".to_string(),
-        |items: &mut Items, _args: Vec<String>| {
-            for i in 0..items.get_entries().len(){
-                println!("{}", items.get_entries()[i].get_content());
-            }
-        }
-        );
-    
     let parsed_command = parse_input(input); // Prarse the input
 
     match parsed_command {
         Some((cmd, args)) => { // Checks that there was input
-            let func = commands.get(&cmd); // Pulls the command funciton out of the HashMap
-            match func {
-                Some(func) => {
-                        func(items, args); // If found, execute the command
-                        Ok(())
+            match cmd.as_str() { // Matches the given command against the list of possible commands
+                "test" => {
+                    for s in args {
+                        println!("{}", s);
                     }
-                None => Err("Invalid command.".to_string())
+                },
+                "add" => {
+                    let mut content = String::new();
+                    for s in args {
+                        content.push(' ');
+                        content.push_str(&s);
+                    }
+                    items.add_entry(content);
+                },
+                "list" => {
+                    for i in 0..items.get_entries().len() {
+                        println!("Entry {}: {}", i + 1, items.get_entries()[i].get_content());
+                    }
+                },
+                _ => return Err("Invalid command.".to_string())
             }
         },
-        None => Err("Please enter a command.".to_string())
+        None => return Err("Please enter a command:".to_string())
     }
-
+    Ok(())
 }
