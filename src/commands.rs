@@ -28,7 +28,7 @@ pub fn parse_input(input: String) -> Option<(String, Vec<String>)> {
 
 // Send user input to parse_input(), then matches the command Option
 // to execute the associated function
-pub fn run_command(items: &mut Items, input: String) {
+pub fn run_command(items: &mut Items, input: String) -> Result<(), String> {
 
     // Create a HashMap of commands
     let mut commands: HashMap<String, fn(&mut Items, Vec<String>)> = HashMap::new();
@@ -71,11 +71,14 @@ pub fn run_command(items: &mut Items, input: String) {
         Some((cmd, args)) => { // Checks that there was input
             let func = commands.get(&cmd); // Pulls the command funciton out of the HashMap
             match func {
-                Some(func) => func(items, args), // If found, execute the command
-                None => println!("{} is not a valid command", cmd)
+                Some(func) => {
+                        func(items, args); // If found, execute the command
+                        Ok(())
+                    }
+                None => Err("Invalid command.".to_string())
             }
         },
-        None => println!("You did not input a command")
+        None => Err("Please enter a command.".to_string())
     }
 
 }

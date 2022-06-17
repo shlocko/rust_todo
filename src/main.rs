@@ -22,7 +22,9 @@ fn main() {
             .read_line(&mut cmd)
             .expect("Did not enter string correctly");
 
-        run_command(&mut items, cmd.trim().to_string());
+        if let Err(message) = run_command(&mut items, cmd.trim().to_string()) {
+            println!("{}", message);
+        }
     }
 
 }
