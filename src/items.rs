@@ -38,8 +38,8 @@ impl Items {
         self.entries.clone()
     }
     pub fn del_entry(&mut self, index: usize) -> Result<(), ()> {
-       if self.entries.len() > index {
-           self.entries.remove(index);
+       if self.entries.len() > index && index > 0 {
+           self.entries.remove(index - 1);
            Ok(())
        } else {
            Err(())

@@ -55,7 +55,7 @@ pub fn run_command(items: &mut Items, input: String) -> Result<(), String> {
                     if args.len() == 1 {
                         match args[0].parse::<usize>() {
                             Ok(n) => {
-                                match items.del_entry(n - 1) {
+                                match items.del_entry(n) {
                                     Ok(()) => println!("Item deleted"),
                                     Err(()) => return Err("Invalid index".to_string())
                                 }
