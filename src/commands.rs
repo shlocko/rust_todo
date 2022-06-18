@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use std::collections::HashMap;
 
 // Takes in the string from user input, 
 // splits it into a command (Option) and args (Vector of Strings)
@@ -50,6 +49,21 @@ pub fn run_command(items: &mut Items, input: String) -> Result<(), String> {
                 "list" => {
                     for i in 0..items.get_entries().len() {
                         println!("Entry {}: {}", i + 1, items.get_entries()[i].get_content());
+                    }
+                },
+                "delete" => {
+                    if args.len() == 1 {
+                        match args[0].parse::<usize>() {
+                            Ok(n) => {
+                                match items.del_entry(n - 1) {
+                                    Ok(()) => println!("Item deleted"),
+                                    Err(()) => return Err("Invalid index".to_string())
+                                }
+                            },
+                            Err(_e) => return Err("Argument provided was not a valid number".to_string())
+                        }
+                    } else {
+                        return Err("Usage: delete <entry number>".to_string());
                     }
                 },
                 _ => return Err("Invalid command.".to_string())
